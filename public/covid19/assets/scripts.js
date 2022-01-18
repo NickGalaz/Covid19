@@ -7,7 +7,6 @@ const postData = async (email, password) => {
             })
         const { token } = await response.json();
         localStorage.setItem('jwt-token', token);
-        console.log(token);
         return token;
     } catch (error) {
         console.log(`Error: ${error}`);
@@ -26,10 +25,78 @@ const getData = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log(data);
+            agregarData(data);
+            generateChart(newData);
         }
     } catch (error) {
         console.log(`Error: ${error}`);
     }
+}
+
+const newData = [];
+const agregarData = (array) => {
+    // Arrays vacíos para guardar datos separados por categorías
+    let active = [];
+    let confirmed = [];
+    let deaths = [];
+    let recovered = [];
+
+    array.forEach(element => {
+        element.active = Math.floor((element.confirmed - element.deaths) * 0.4);
+        element.recovered = Math.floor((element.confirmed - element.deaths) * 0.6);
+        if (element.active >= 10000) {
+            // Replicar estructura del gráfico para los datos -> "{ label: data[0].location, y: data[0].recovered }"
+            active.push({ label: element.location, y: element.active });
+            confirmed.push({ label: element.location, y: element.confirmed });
+            deaths.push({ label: element.location, y: element.deaths });
+            recovered.push({ label: element.location, y: element.recovered });
+        }
+    });
+    newData.push(active);
+    newData.push(confirmed);
+    newData.push(deaths);
+    newData.push(recovered);
+    console.log(newData[0]);
+    return newData;
+}
+
+const generateChart = async (newData) => {
+    const container = document.getElementById('graficoCovid');
+    var chart = new CanvasJS.Chart(container, {
+        title: {
+            text: "Países con Covid19"
+        },
+
+        data: [  //array of dataSeries     
+            { // Activos
+                /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                type: "column",
+                showInLegend: true,
+                name: "Activos",
+                dataPoints: newData[0]
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                name: "Confirmados",
+                dataPoints: newData[1]
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                name: "Muertes",
+                dataPoints: newData[2]
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                name: "Recuperados",
+                dataPoints: newData[3]
+            }
+
+        ]
+    });
+    chart.render();
 }
 
 const init = async () => {
@@ -40,34 +107,6 @@ const init = async () => {
 }
 const email = "Telly.Hoeger@billy.biz";
 const password = "secret";
-
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	title:{
-		text: "Top Oil Reserves"
-	},
-	axisY: {
-		title: "Reserves(MMbbl)"
-	},
-	data: [{        
-		type: "column",  
-		showInLegend: true, 
-		legendMarkerColor: "grey",
-		legendText: "MMbbl = one million barrels",
-		dataPoints: [      
-			{ y: 300878, label: "Venezuela" },
-			{ y: 266455,  label: "Saudi" },
-			{ y: 169709,  label: "Canada" },
-			{ y: 158400,  label: "Iran" },
-			{ y: 142503,  label: "Iraq" },
-			{ y: 101500, label: "Kuwait" },
-			{ y: 97800,  label: "UAE" },
-			{ y: 80000,  label: "Russia" }
-		]
-	}]
-});
-
 
 window.onload = async function () {
     // Probando traer datos
