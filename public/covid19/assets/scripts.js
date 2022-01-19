@@ -24,7 +24,7 @@ const getData = async (jwt) => {
             })
         const { data } = await response.json();
         if (data) {
-            console.log(data);
+            console.log('Data API:', data);
             agregarData(data);
             generateChart(newData);
         }
@@ -44,7 +44,7 @@ const agregarData = (array) => {
     array.forEach(element => {
         element.active = Math.floor((element.confirmed - element.deaths) * 0.4);
         element.recovered = Math.floor((element.confirmed - element.deaths) * 0.6);
-        if (element.active >= 10000) {
+        if (element.active >= 1000000) {
             // Replicar estructura del gráfico para los datos -> "{ label: data[0].location, y: data[0].recovered }"
             active.push({ label: element.location, y: element.active });
             confirmed.push({ label: element.location, y: element.confirmed });
@@ -56,15 +56,26 @@ const agregarData = (array) => {
     newData.push(confirmed);
     newData.push(deaths);
     newData.push(recovered);
-    console.log(newData[0]);
+    console.log(newData);
     return newData;
 }
 
 const generateChart = async (newData) => {
+    console.log('Dentro de generateChart', newData);
+    const labels = newData[0].map(item => item.label);
+    console.log('Arreglo de labels: ', labels)
     const container = document.getElementById('graficoCovid');
     var chart = new CanvasJS.Chart(container, {
         title: {
             text: "Países con Covid19"
+        },
+        labels: labels,
+        axisX: {
+            labelFontSize: 10,
+            interval: 1,
+            labelAngle: -70,
+            tickLength: 1,
+            labelMaxWidth: 70
         },
 
         data: [  //array of dataSeries     
@@ -112,5 +123,5 @@ window.onload = async function () {
     // Probando traer datos
     const JWT = await postData(email, password);
     getData(JWT);
-    init()
+    //init()
 }
