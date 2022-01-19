@@ -62,7 +62,7 @@ const generateChart = async (newData) => {
             fontWeight: "normal"
         },
         legend: {
-            verticalAlign: "top",  // "top" , "bottom"
+            verticalAlign: "top",
             fontSize: 14,
             fontFamily: "monospace",
             fontWeight: "normal"
@@ -72,12 +72,15 @@ const generateChart = async (newData) => {
             labelFontSize: 10,
             interval: 1,
             labelAngle: -70,
+            gridColor: "LightGray",
+            gridThickness: 1,
             tickLength: 1,
             labelMaxWidth: 80
         },
         axisY: {
             labelFontSize: 14,
-            labelFontFamily: "monospace"
+            labelFontFamily: "monospace",
+            gridColor: "LightGray",
         },
 
         data: [  //array of dataSeries     
