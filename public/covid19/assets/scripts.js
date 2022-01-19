@@ -1,26 +1,8 @@
-const postData = async (email, password) => {
-    try {
-        const response = await fetch('http://localhost:3000/api/login',
-            {
-                method: 'POST',
-                body: JSON.stringify({ email: email, password: password })
-            })
-        const { token } = await response.json();
-        localStorage.setItem('jwt-token', token);
-        return token;
-    } catch (error) {
-        console.log(`Error: ${error}`);
-    }
-}
-
-const getData = async (jwt) => {
+const getData = async () => {
     try {
         const response = await fetch('http://localhost:3000/api/total',
             {
                 method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${jwt}`
-                }
             })
         const { data } = await response.json();
         if (data) {
@@ -110,18 +92,7 @@ const generateChart = async (newData) => {
     chart.render();
 }
 
-const init = async () => {
-    const token = localStorage.getItem('jwt-token');
-    if (token) {
-        getData(token);
-    }
-}
-const email = "Telly.Hoeger@billy.biz";
-const password = "secret";
-
 window.onload = async function () {
     // Probando traer datos
-    const JWT = await postData(email, password);
-    getData(JWT);
-    //init()
+    getData();
 }
