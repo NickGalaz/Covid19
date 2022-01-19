@@ -74,7 +74,6 @@ const generateChart = async (newData) => {
             labelFontSize: 10,
             interval: 1,
             labelAngle: -70,
-            interlacedColor: "#F8F1E4",
             tickLength: 1,
             labelMaxWidth: 70
         },
