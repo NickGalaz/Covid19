@@ -47,7 +47,15 @@ const generateChart = async (newData) => {
     const labels = newData[0].map(item => item.label);
     console.log('Arreglo de labels: ', labels)
     const container = document.getElementById('graficoCovid');
+    CanvasJS.addColorSet("Covid19",
+        [//colorSet Array
+            "#fe5f84",
+            "#ffcb5b",
+            "#c8cccf",
+            "#4ac1c2"
+        ]);
     var chart = new CanvasJS.Chart(container, {
+        colorSet: "Covid19",
         title: {
             text: "Países con Covid19"
         },
