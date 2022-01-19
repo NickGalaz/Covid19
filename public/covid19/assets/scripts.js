@@ -57,15 +57,30 @@ const generateChart = async (newData) => {
     var chart = new CanvasJS.Chart(container, {
         colorSet: "Covid19",
         title: {
-            text: "Países con Covid19"
+            text: "Países con Covid19",
+            fontFamily: "monospace",
+            fontWeight: "normal"
+        },
+        legend: {
+            verticalAlign: "top",
+            fontSize: 14,
+            fontFamily: "monospace",
+            fontWeight: "normal"
         },
         labels: labels,
         axisX: {
             labelFontSize: 10,
             interval: 1,
             labelAngle: -70,
+            gridColor: "LightGray",
+            gridThickness: 1,
             tickLength: 1,
-            labelMaxWidth: 70
+            labelMaxWidth: 80
+        },
+        axisY: {
+            labelFontSize: 14,
+            labelFontFamily: "monospace",
+            gridColor: "LightGray",
         },
 
         data: [  //array of dataSeries     
