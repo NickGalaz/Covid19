@@ -24,3 +24,6 @@ body{
 .tammodal{
     width: 35em;
 }
+#elBoton {
+    padding: 5px 15px 5px 15px;
+}
