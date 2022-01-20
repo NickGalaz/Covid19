@@ -74,17 +74,37 @@
         </div>
     </div> -->
 
-    <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div>
+
+    <!--grafico - style podría cambiarse según cómo se vea-->
+
+    <div id="graficoCovid" class="col-12 col-sm-6 my-auto mx-auto" style="height: 500px; width: auto;">
+    </div>
 
     <section class="container" id="tablaPais">
-        <table class="table" id="tabla-covid"></table>
+        <table class="table table-dark" id="tabla-covid"></table>
+        <!-- Modal -->
+        <div class="modal fade" id="chartPais" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
 
-        <!--jQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <!--Bootstrap JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
-            crossorigin="anonymous"></script>
+                    <div class="modal-body">
+                        <div id="chartPais"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Bootstrap JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
