@@ -1,15 +1,20 @@
 const getData = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/total',
-            {
-                method: 'GET',
-            })
+        const response = await fetch('http://localhost:3000/api/total');
         const { data } = await response.json();
-        if (data) {
-            console.log('Data API:', data);
-            agregarData(data);
-            generateChart(newData);
-        }
+        console.log('Data API:', data);
+        agregarData(data);
+        generateChart(newData);
+        datoTabla(data);
+        $(".btnCountry").click(function () {
+            paisConfirmados = [];
+            paisMuertos = [];
+            const pais = $(this).val();
+            var pais2 = pais.split(' ').join('_');
+            getData(pais2);
+        });
+
+
     } catch (error) {
         console.log(`Error: ${error}`);
     }
@@ -57,15 +62,30 @@ const generateChart = async (newData) => {
     var chart = new CanvasJS.Chart(container, {
         colorSet: "Covid19",
         title: {
-            text: "Países con Covid19"
+            text: "Países con Covid19",
+            fontFamily: "monospace",
+            fontWeight: "normal"
+        },
+        legend: {
+            verticalAlign: "top",
+            fontSize: 14,
+            fontFamily: "monospace",
+            fontWeight: "normal"
         },
         labels: labels,
         axisX: {
             labelFontSize: 10,
             interval: 1,
             labelAngle: -70,
+            gridColor: "LightGray",
+            gridThickness: 1,
             tickLength: 1,
-            labelMaxWidth: 70
+            labelMaxWidth: 80
+        },
+        axisY: {
+            labelFontSize: 14,
+            labelFontFamily: "monospace",
+            gridColor: "LightGray",
         },
 
         data: [  //array of dataSeries     
@@ -100,7 +120,21 @@ const generateChart = async (newData) => {
     chart.render();
 }
 
+// Tabla
+const datoTabla = (data) => {
+    let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
+    for (let i = 0; i < data.length; i++) {
+        texto += `<tr>
+                <td>${data[i].location}</td>
+                <td>${data[i].confirmed}</td>
+                <td>${data[i].deaths}</td>
+                <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" value="${data[i].location}">detalles</button></td>              
+                </tr>`;
+    }
+    document.querySelector("#tabla-covid").innerHTML = texto;
+}
+
+
 window.onload = async function () {
-    // Probando traer datos
     getData();
 }
