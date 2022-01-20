@@ -1,25 +1,19 @@
 const getData = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/total');
+        const response = await fetch('http://localhost:3000/api/total',
+            {
+                method: 'GET',
+            })
         const { data } = await response.json();
-        console.log('Data API:', data);
-        agregarData(data);
-        generateChart(newData);
-        datoTabla(data);
-        $(".btnCountry").click(function () {
-            paisConfirmados = [];
-            paisMuertos = [];
-            const pais = $(this).val();
-            var pais2 = pais.split(' ').join('_');
-            getData(pais2);
-        });
-
-
+        if (data) {
+            console.log('Data API:', data);
+            agregarData(data);
+            generateChart(newData);
+        }
     } catch (error) {
         console.log(`Error: ${error}`);
     }
 }
-
 const newData = [];
 const agregarData = (array) => {
     // Arrays vacíos para guardar datos separados por categorías
@@ -27,7 +21,6 @@ const agregarData = (array) => {
     let confirmed = [];
     let deaths = [];
     let recovered = [];
-
     array.forEach(element => {
         element.active = Math.floor((element.confirmed - element.deaths) * 0.4);
         element.recovered = Math.floor((element.confirmed - element.deaths) * 0.6);
@@ -46,7 +39,6 @@ const agregarData = (array) => {
     console.log(newData);
     return newData;
 }
-
 const generateChart = async (newData) => {
     console.log('Dentro de generateChart', newData);
     const labels = newData[0].map(item => item.label);
@@ -114,27 +106,11 @@ const generateChart = async (newData) => {
                 name: "Recuperados",
                 dataPoints: newData[3]
             }
-
         ]
     });
     chart.render();
 }
-
-// Tabla
-const datoTabla = (data) => {
-    let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
-    for (let i = 0; i < data.length; i++) {
-        texto += `<tr>
-                <td>${data[i].location}</td>
-                <td>${data[i].confirmed}</td>
-                <td>${data[i].deaths}</td>
-                <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" value="${data[i].location}">detalles</button></td>              
-                </tr>`;
-    }
-    document.querySelector("#tabla-covid").innerHTML = texto;
-}
-
-
 window.onload = async function () {
+    // Probando traer datos
     getData();
 }
