@@ -4,12 +4,32 @@ const getData = async () => {
             {
                 method: 'GET',
             })
+<<<<<<< HEAD
+        const response = await fetch('http://localhost:3000/api/total');
+=======
+>>>>>>> f245d4021311732fbaa957ead24a9a9ea495a62c
         const { data } = await response.json();
         if (data) {
             console.log('Data API:', data);
             agregarData(data);
             generateChart(newData);
         }
+<<<<<<< HEAD
+        console.log('Data API:', data);
+        agregarData(data);
+        generateChart(newData);
+        datoTabla(data);
+        $(".btnCountry").click(function () {
+            paisConfirmados = [];
+            paisMuertos = [];
+            const pais = $(this).val();
+            var pais2 = pais.split(' ').join('_');
+            getData(pais2);
+        });
+
+
+=======
+>>>>>>> f245d4021311732fbaa957ead24a9a9ea495a62c
     } catch (error) {
         console.log(`Error: ${error}`);
     }
@@ -79,7 +99,6 @@ const generateChart = async (newData) => {
             labelFontFamily: "monospace",
             gridColor: "LightGray",
         },
-
         data: [  //array of dataSeries     
             { // Activos
                 /*** Change type "column" to "bar", "area", "line" or "pie"***/
@@ -113,4 +132,4 @@ const generateChart = async (newData) => {
 window.onload = async function () {
     // Probando traer datos
     getData();
-}
+} 
