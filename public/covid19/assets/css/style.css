@@ -27,3 +27,33 @@ body{
 #elBoton {
     padding: 5px 15px 5px 15px;
 }
+
+tbody td {
+    text-align: center;
+    min-width: 100px;
+    vertical-align: middle;
+}
+
+tbody th {
+    color: #f2ff00;
+    background-color: #0015ff;
+}
+
+tbody tr {
+    text-align: center;
+    min-width: 100px;
+    vertical-align: middle;
+}
+
+tbody td:first-child {
+    color: #fff;
+}
+
+#tablaPais {
+    padding-top: 25em;
+    width: 100%;
+}
+
+.modal-content {
+    height: 40vh;
+}

@@ -19,6 +19,7 @@ const getData = async () => {
         console.log(`Error: ${error}`);
     }
 }
+
 const newData = [];
 const agregarData = (array) => {
     // Arrays vacíos para guardar datos separados por categorías
@@ -26,6 +27,7 @@ const agregarData = (array) => {
     let confirmed = [];
     let deaths = [];
     let recovered = [];
+
     array.forEach(element => {
         element.active = Math.floor((element.confirmed - element.deaths) * 0.4);
         element.recovered = Math.floor((element.confirmed - element.deaths) * 0.6);
@@ -44,6 +46,7 @@ const agregarData = (array) => {
     console.log(newData);
     return newData;
 }
+
 const generateChart = async (newData) => {
     console.log('Dentro de generateChart', newData);
     const labels = newData[0].map(item => item.label);
@@ -84,6 +87,7 @@ const generateChart = async (newData) => {
             labelFontFamily: "monospace",
             gridColor: "LightGray",
         },
+
         data: [  //array of dataSeries     
             { // Activos
                 /*** Change type "column" to "bar", "area", "line" or "pie"***/
@@ -111,6 +115,7 @@ const generateChart = async (newData) => {
                 dataPoints: newData[3]
             }
         ]
+
     });
     chart.render();
 }
@@ -132,4 +137,4 @@ const datoTabla = (data) => {
 
 window.onload = async function () {
     getData();
-}
+} 
