@@ -118,29 +118,22 @@ const generateChart = async (newData) => {
         ]
     });
     chart.render();
+}
 
-    // Tabla
-    const datoTabla = (data) => {
-        let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
-        for (let i = 0; i < data.length; i++) {
-            texto += `<tr>
+// Tabla
+const datoTabla = (data) => {
+    let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
+    for (let i = 0; i < data.length; i++) {
+        texto += `<tr>
                 <td>${data[i].location}</td>
                 <td>${data[i].confirmed}</td>
                 <td>${data[i].deaths}</td>
                 <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" value="${data[i].location}">detalles</button></td>              
                 </tr>`;
-        }
-        document.querySelector("#tabla-covid").innerHTML = texto;
     }
-    datoTabla(dataComplete);
-    $(".btnCountry").click(function () {
-        countryApiConfirmed = [];
-        countryApiDeath = [];
-        const pais = $(this).val();
-        var pais2 = pais.split(' ').join('_');
-        getPostCountry(pais2);
-    });
+    document.querySelector("#tabla-covid").innerHTML = texto;
 }
+
 
 window.onload = async function () {
     getData();
