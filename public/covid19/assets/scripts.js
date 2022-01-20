@@ -114,8 +114,8 @@ const generateChart = async (newData) => {
                 name: "Recuperados",
                 dataPoints: newData[3]
             }
-
         ]
+
     });
     chart.render();
 }
@@ -137,4 +137,4 @@ const datoTabla = (data) => {
 
 window.onload = async function () {
     getData();
-}
+} 
