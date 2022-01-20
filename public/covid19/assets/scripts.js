@@ -4,13 +4,17 @@ const getData = async () => {
             {
                 method: 'GET',
             })
+<<<<<<< HEAD
         const response = await fetch('http://localhost:3000/api/total');
+=======
+>>>>>>> f245d4021311732fbaa957ead24a9a9ea495a62c
         const { data } = await response.json();
         if (data) {
             console.log('Data API:', data);
             agregarData(data);
             generateChart(newData);
         }
+<<<<<<< HEAD
         console.log('Data API:', data);
         agregarData(data);
         generateChart(newData);
@@ -24,6 +28,8 @@ const getData = async () => {
         });
 
 
+=======
+>>>>>>> f245d4021311732fbaa957ead24a9a9ea495a62c
     } catch (error) {
         console.log(`Error: ${error}`);
     }
@@ -123,22 +129,6 @@ const generateChart = async (newData) => {
     });
     chart.render();
 }
-
-// Tabla
-const datoTabla = (data) => {
-    let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
-    for (let i = 0; i < data.length; i++) {
-        texto += `<tr>
-                <td>${data[i].location}</td>
-                <td>${data[i].confirmed}</td>
-                <td>${data[i].deaths}</td>
-                <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" value="${data[i].location}">detalles</button></td>              
-                </tr>`;
-    }
-    document.querySelector("#tabla-covid").innerHTML = texto;
-}
-
-
 window.onload = async function () {
     // Probando traer datos
     getData();
