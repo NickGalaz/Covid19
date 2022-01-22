@@ -181,17 +181,16 @@ const graficoDetalle = async (pais) => {
             ]
         }]
     });
-    chart.render();    
-    
-    
+    chart.render();
+
 }
 
 window.onload = async function () {
     getData();
-    // const btnCountry = document.querySelector('button');
-    // btnCountry.addEventListener('click', () => {
-    //     console.log('click');
-
-    //     getDataCountry();
-    // })
+    const formulario = document.getElementById('js-form');
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('click');
+        $('#dataContainer').hide();
+    })
 }

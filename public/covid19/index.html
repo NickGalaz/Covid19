@@ -20,37 +20,35 @@
 <body>
 
     <!--nav-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3">
         <!-- <div class="container-fluid"> -->
-            <div class="container">
+        <div class="container">
             <!-- <a class="navbar-brand ms-3" href="#">Covid19</a> -->
             <a class="navbar-brand" href="#">Covid19</a>
 
             <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent"> -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> -->
-                    <ul class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <!-- <a class="nav-link active" aria-current="page" href="#">Home</a> -->
                         <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <!-- <a class="nav-link" href="#">Iniciar Sesión</a> -->
-                        <a class="nav-link" href="#inicio">Iniciar Sesión</a>
+                        <a id="iniciarSesion" class="nav-link" href="#inicio" data-toggle="modal"
+                            data-target="#logeo">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="cerrarSesion" class="nav-link" href="#inicio">Cerrar Sesión</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- formulario
     <div id="toggle-form">
         <div class="modal fade" id="logeo" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="logeoToken" aria-hidden="true">
@@ -73,29 +71,47 @@
                                 <label for="js-input-password">Password:</label>
                                 <input type="password" class="form-control" id="js-input-password">
                             </div>
-                            <button type="submit" class="btn btn-primary">Enviar</button>
+                            <button id="submitBtn" type="submit" class="btn btn-primary">Enviar</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal"
-                            id="close-button">Volver</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" id="closeButton">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
-    <!-- <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div> -->
-    <div id="graficoCovid" class="col-12 col-sm-8 my-3 mx-auto" style="height: 500px; width: auto;"></div>
+    </div>
+    <div>
+        
+        <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div>
+        <!-- Tabla -->
+        <section class="container" id="tablaPais">
+            <table class="table table-striped" id="tabla-covid"></table>
+            <!-- Modal -->
 
-    <section class="container" id="tablaPais">
-        <table class="table my-5" id="tabla-covid"></table>
+            <div class="modal fade" id="chartPais" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body" style="height:450px; width:450px">
+                            <div id="covidChartPais" class="graficoPais"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
-        <!--jQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <!--Bootstrap JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
-            crossorigin="anonymous"></script>
+
+    <!--jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Bootstrap JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
