@@ -18,6 +18,9 @@ const getDataCountry = async (pais) => {
     // const country = document.querySelector(".btnCountry").value;
     console.log('Value del botón ver detalle: ', pais);
     try {
+        if (pais==='United Kingdom'){
+            pais='GB'
+        }
         const response = await fetch(`http://localhost:3000/api/countries/${pais}`);
         const { data } = await response.json();
         console.log('Data API country: ', data);
