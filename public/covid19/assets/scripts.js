@@ -14,21 +14,57 @@ const getData = async () => {
     }
 }
 
+// Conseguir datos de todos los países
 const getDataCountry = async (pais) => {
-    // const country = document.querySelector(".btnCountry").value;
-    console.log('Value del botón ver detalle: ', pais);
     try {
         const response = await fetch(`http://localhost:3000/api/countries/${pais}`);
         const { data } = await response.json();
         console.log('Data API country: ', data);
         if (data) {
-            graficoDetalle(data)
+            graficoDetalle(data);
         }
         return data
     } catch (error) {
         console.log(`Error en getDataCountry: ${error}`);
     }
 }
+
+
+// DATOS SITUACIÓN CHILE
+const baseUrl = 'http://localhost:3000/api';
+const requestDataChile = async () => {
+    try {
+        const response = await fetch(url);
+        const { data } = await response.json();
+        return data
+    } catch (error) {
+        console.log(`Error en requestDataChile: ${error}`);
+    }
+}
+// Solicitud datos confirmados
+const getConfirmed = async () => {
+    const url = `${baseUrl}/confirmed`;
+    return requestDataChile(url);
+}
+// Solicitud datos muertes
+const getDeaths = async () => {
+    const url = `${baseUrl}/deaths`;
+    return requestDataChile(url);
+}
+// Solicitud datos recuperados
+const getRecovered = async () => {
+    const url = `${baseUrl}/recovered`;
+    return requestDataChile(url);
+}
+const getAllData = async () => {
+    // HAY QUE ARREGLAR ESTO
+    const confirmed = await getConfirmed();
+    const deaths = await getDeaths();
+    const recovered = await getRecovered();
+    const response = await Promise.all([confirmed, deaths, recovered]);
+    console.log('response getAllData: ', response);
+}
+
 
 const newData = [];
 const agregarData = (array) => {
@@ -187,10 +223,24 @@ const graficoDetalle = async (pais) => {
 
 window.onload = async function () {
     getData();
+
+    $('#cerrarSesion').hide();
+    $('#situacionChile').hide();
+
     const formulario = document.getElementById('js-form');
     formulario.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log('click');
         $('#dataContainer').hide();
-    })
+        $('#iniciarSesion').hide();
+        $('#toggle-form').toggle();
+        $('#situacionChile').show();
+        $('#cerrarSesion').show();
+        getAllData();
+    });
+
+    // Event listener para mostrar datos Situación Chile cuando se haga click en navbar
+    const situacionChile = document.getElementById('situacionChile');
+    situacionChile.addEventListener('click', () => {
+        console.log('Click en Situación Chile');
+    });
 }
