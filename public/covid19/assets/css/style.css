@@ -7,39 +7,29 @@ body{
     border-style: solid;
     border-width: 3px;
 }
-.cardgraf{
+/* .cardgraf{
     width: 50em;
     height: 500px;
     text-align: center;
     margin: auto;
-}
+} */
 
-.grafico2{
+/* .grafico2{
     width: 35em;
     height: 500px;
     text-align: center;
     margin: auto;
-}
+} */
 
-.tammodal{
+/* .tammodal{
     width: 35em;
 }
 #elBoton {
     padding: 5px 15px 5px 15px;
-}
+} */
 
-tbody td {
-    text-align: center;
-    min-width: 100px;
-    vertical-align: middle;
-}
 
-tbody th {
-    color: #f2ff00;
-    background-color: #0015ff;
-}
-
-tbody tr {
+/* tbody tr {
     text-align: center;
     min-width: 100px;
     vertical-align: middle;
@@ -56,4 +46,4 @@ tbody td:first-child {
 
 .modal-content {
     height: 40vh;
-}
+} */

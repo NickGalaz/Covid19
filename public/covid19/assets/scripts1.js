@@ -3,30 +3,20 @@ const getData = async () => {
         const response = await fetch('http://localhost:3000/api/total');
         const { data } = await response.json();
         console.log('Data API:', data);
-        console.log('País: ', data[1].location);
         agregarData(data);
         generateChart(newData);
         datoTabla(data);
-        graficoDetalle(newData);
+        $(".btnCountry").click(function () {
+            paisConfirmados = [];
+            paisMuertos = [];
+            const pais = $(this).val();
+            var pais2 = pais.split(' ').join('_');
+            getData(pais2);
+        });
+
 
     } catch (error) {
         console.log(`Error: ${error}`);
-    }
-}
-
-const getDataCountry = async (pais) => {
-    // const country = document.querySelector(".btnCountry").value;
-    console.log('Value del botón ver detalle: ', pais);
-    try {
-        const response = await fetch(`http://localhost:3000/api/countries/${pais}`);
-        const { data } = await response.json();
-        console.log('Data API country: ', data);
-        if (data) {
-            graficoDetalle(data)
-        }
-        return data
-    } catch (error) {
-        console.log(`Error en getDataCountry: ${error}`);
     }
 }
 
@@ -138,60 +128,13 @@ const datoTabla = (data) => {
                 <td>${data[i].location}</td>
                 <td>${data[i].confirmed}</td>
                 <td>${data[i].deaths}</td>
-                <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" onclick="getDataCountry('${data[i].location}')">Ver detalle</button></td>              
+                <td><button type="button" class="btnCountry btn btn-outline-success" data-toggle="modal" data-target="#chartPais" value="${data[i].location}">detalles</button></td>              
                 </tr>`;
     }
     document.querySelector("#tabla-covid").innerHTML = texto;
 }
 
 
-// Modal
-const graficoDetalle = async (pais) => {
-    const modal = document.getElementById('covidChartPais');
-    pais.active = Math.floor((pais.confirmed - pais.deaths) * 0.4);
-    pais.recovered = Math.floor((pais.confirmed - pais.deaths) * 0.6);
-    CanvasJS.addColorSet("Covid19",
-        [//colorSet Array
-            "#fe5f84",
-            "#ffcb5b",
-            "#c8cccf",
-            "#4ac1c2"
-        ]);
-    var chart = new CanvasJS.Chart(modal, {
-        theme: "light2", // "light1", "light2", "dark1", "dark2"
-        exportEnabled: true,
-        animationEnabled: true,
-        colorSet: "Covid19",
-        title: {
-            text: pais.location
-        },
-        data: [{
-            type: "pie",
-            startAngle: 25,
-            toolTipContent: "<b>{label}</b>: {y}",
-            showInLegend: "true",
-            legendText: "{label}",
-            indexLabelFontSize: 11,
-            indexLabel: "{label} - {y}",
-            dataPoints: [
-                { y: pais.active, label: "Activos" },
-                { y: pais.confirmed, label: "Confirmados" },
-                { y: pais.deaths, label: "Muertos" },
-                { y: pais.recovered, label: "Recuperados" },
-            ]
-        }]
-    });
-    chart.render();    
-    
-    
-}
-
 window.onload = async function () {
     getData();
-    // const btnCountry = document.querySelector('button');
-    // btnCountry.addEventListener('click', () => {
-    //     console.log('click');
-
-    //     getDataCountry();
-    // })
-}
+} 
