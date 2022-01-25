@@ -3,7 +3,6 @@ const getData = async () => {
         const response = await fetch('http://localhost:3000/api/total');
         const { data } = await response.json();
         console.log('Data API:', data);
-        console.log('País: ', data[1].location);
         agregarData(data);
         generateChart(newData);
         datoTabla(data);
@@ -31,40 +30,80 @@ const getDataCountry = async (pais) => {
 
 
 // DATOS SITUACIÓN CHILE
-const baseUrl = 'http://localhost:3000/api';
-const requestDataChile = async () => {
+const requestDataChile = async (email, password) => {
     try {
-        const response = await fetch(url);
-        const { data } = await response.json();
-        return data
+        const response = await fetch('http://localhost:3000/api/login',
+            {
+                method: 'POST',
+                body: JSON.stringify({ email: email, password: password })
+            });
+        const { token } = await response.json();
+        localStorage.setItem('jwt-token', token);
+        return token
     } catch (error) {
         console.log(`Error en requestDataChile: ${error}`);
     }
 }
 // Solicitud datos confirmados
-const getConfirmed = async () => {
-    const url = `${baseUrl}/confirmed`;
-    return requestDataChile(url);
+const getConfirmed = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/confirmed',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (confirmed): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (confirmed): ', error);
+    }
+
 }
 // Solicitud datos muertes
-const getDeaths = async () => {
-    const url = `${baseUrl}/deaths`;
-    return requestDataChile(url);
+const getDeaths = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/deaths',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (deaths): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (deaths): ', error);
+    }
+
 }
 // Solicitud datos recuperados
-const getRecovered = async () => {
-    const url = `${baseUrl}/recovered`;
-    return requestDataChile(url);
-}
-const getAllData = async () => {
-    // HAY QUE ARREGLAR ESTO
-    const confirmed = await getConfirmed();
-    const deaths = await getDeaths();
-    const recovered = await getRecovered();
-    const response = await Promise.all([confirmed, deaths, recovered]);
-    console.log('response getAllData: ', response);
-}
+const getRecovered = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/recovered',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (recovered): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (recovered): ', error);
+    }
 
+}
 
 const newData = [];
 const agregarData = (array) => {
@@ -221,26 +260,50 @@ const graficoDetalle = async (pais) => {
 
 }
 
-window.onload = async function () {
+const toggles = () => {
+    $('#iniciarSesion').toggle();
+    $('#cerrarSesion').toggle();
+    $('#situacionChile').toggle();
+}
+
+const init = async () => {
+    const token = localStorage.getItem('jwt-token');
+    console.log(token);
+    if (token) {
+        getConfirmed(token);
+        getDeaths(token);
+        getRecovered(token);
+        toggles();
+    }
+}
+
+const logOut = () => {
+    localStorage.clear();
+    window.location.reload();
+}
+
+window.onload = function () {
     getData();
-
-    $('#cerrarSesion').hide();
-    $('#situacionChile').hide();
-
-    const formulario = document.getElementById('js-form');
-    formulario.addEventListener('submit', (e) => {
-        e.preventDefault();
-        $('#dataContainer').hide();
-        $('#iniciarSesion').hide();
-        $('#toggle-form').toggle();
-        $('#situacionChile').show();
-        $('#cerrarSesion').show();
-        getAllData();
+    init();
+    $('#cerrarSesion').click(function () {
+        console.log('click');
+        logOut();
     });
 
-    // Event listener para mostrar datos Situación Chile cuando se haga click en navbar
-    const situacionChile = document.getElementById('situacionChile');
-    situacionChile.addEventListener('click', () => {
-        console.log('Click en Situación Chile');
-    });
+    $('#js-form').submit(async (e) => {
+        e.preventDefault()
+        $('#dataContainer').toggle();
+        $('#logeo').modal('hide');
+        $('#cerrarSesion').click(function () {
+            console.log('click');
+            logOut();
+        });
+        const email = document.getElementById('js-input-email').value
+        const password = document.getElementById('js-input-password').value
+        const JWT = await requestDataChile(email, password);
+        getConfirmed(JWT);
+        getDeaths(JWT);
+        getRecovered(JWT);
+        init();
+    })
 }
