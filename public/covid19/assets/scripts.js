@@ -13,7 +13,7 @@ const getData = async () => {
     }
 }
 
-// Conseguir datos de todos los países
+// Conseguir datos de cada país
 const getDataCountry = async (pais) => {
     try {
         const response = await fetch(`http://localhost:3000/api/countries/${pais}`);
@@ -132,6 +132,7 @@ const agregarData = (array) => {
     return newData;
 }
 
+// Gráfico todos los países
 const generateChart = async (newData) => {
     console.log('Dentro de generateChart', newData);
     const labels = newData[0].map(item => item.label);
@@ -205,7 +206,7 @@ const generateChart = async (newData) => {
     chart.render();
 }
 
-// Tabla
+// Tabla Países
 const datoTabla = (data) => {
     let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
     for (let i = 0; i < data.length; i++) {
@@ -220,7 +221,7 @@ const datoTabla = (data) => {
 }
 
 
-// Modal
+// Modal por país
 const graficoDetalle = async (pais) => {
     const modal = document.getElementById('covidChartPais');
     pais.active = Math.floor((pais.confirmed - pais.deaths) * 0.4);
@@ -260,6 +261,38 @@ const graficoDetalle = async (pais) => {
 
 }
 
+// Gráfico Situación Chile
+const generarGraficoChile = async () => {
+    const container = document.getElementById('situacionChileGrafico');
+    var chart = new CanvasJS.Chart(container, {
+        animationEnabled: true,
+        theme: "light2",
+        title: {
+            text: "Situación Chile"
+        },
+        data: [{
+            type: "line",
+            indexLabelFontSize: 16,
+            dataPoints: [
+                { y: 450 },
+                { y: 414 },
+                { y: 520 },
+                { y: 460 },
+                { y: 450 },
+                { y: 500 },
+                { y: 480 },
+                { y: 480 },
+                { y: 410 },
+                { y: 500 },
+                { y: 480 },
+                { y: 510 }
+            ]
+        }]
+    });
+    chart.render();
+
+}
+
 const toggles = () => {
     $('#iniciarSesion').toggle();
     $('#cerrarSesion').toggle();
@@ -291,8 +324,8 @@ window.onload = function () {
     });
 
     $('#js-form').submit(async (e) => {
-        e.preventDefault()
-        $('#dataContainer').toggle();
+        e.preventDefault();
+        //$('#dataContainer').toggle();
         $('#logeo').modal('hide');
         $('#cerrarSesion').click(function () {
             console.log('click');
@@ -305,5 +338,14 @@ window.onload = function () {
         getDeaths(JWT);
         getRecovered(JWT);
         init();
-    })
+    });
+
+    $('#situacionChile').click(function () {
+        $('#dataContainer').toggle();
+        generarGraficoChile();
+    });
+
+    $('#home').click(function () {
+        $('#dataContainer').toggle();
+    });
 }
