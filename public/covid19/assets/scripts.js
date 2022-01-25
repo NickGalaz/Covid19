@@ -3,7 +3,6 @@ const getData = async () => {
         const response = await fetch('http://localhost:3000/api/total');
         const { data } = await response.json();
         console.log('Data API:', data);
-        console.log('País: ', data[1].location);
         agregarData(data);
         generateChart(newData);
         datoTabla(data);
@@ -14,9 +13,8 @@ const getData = async () => {
     }
 }
 
+// Conseguir datos de cada país
 const getDataCountry = async (pais) => {
-    // const country = document.querySelector(".btnCountry").value;
-    console.log('Value del botón ver detalle: ', pais);
     try {
         if (pais==='United Kingdom'){
             pais='GB'
@@ -25,12 +23,89 @@ const getDataCountry = async (pais) => {
         const { data } = await response.json();
         console.log('Data API country: ', data);
         if (data) {
-            graficoDetalle(data)
+            graficoDetalle(data);
         }
         return data
     } catch (error) {
         console.log(`Error en getDataCountry: ${error}`);
     }
+}
+
+
+// DATOS SITUACIÓN CHILE
+const requestDataChile = async (email, password) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/login',
+            {
+                method: 'POST',
+                body: JSON.stringify({ email: email, password: password })
+            });
+        const { token } = await response.json();
+        localStorage.setItem('jwt-token', token);
+        return token
+    } catch (error) {
+        console.log(`Error en requestDataChile: ${error}`);
+    }
+}
+// Solicitud datos confirmados
+const getConfirmed = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/confirmed',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (confirmed): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (confirmed): ', error);
+    }
+
+}
+// Solicitud datos muertes
+const getDeaths = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/deaths',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (deaths): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (deaths): ', error);
+    }
+
+}
+// Solicitud datos recuperados
+const getRecovered = async (jwt) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/recovered',
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+        const { data } = await response.json();
+        if (data) {
+            console.log('Data API (recovered): ', data);
+        }
+    } catch (error) {
+        localStorage.clear();
+        console.log('Error (recovered): ', error);
+    }
+
 }
 
 const newData = [];
@@ -60,6 +135,7 @@ const agregarData = (array) => {
     return newData;
 }
 
+// Gráfico todos los países
 const generateChart = async (newData) => {
     console.log('Dentro de generateChart', newData);
     const labels = newData[0].map(item => item.label);
@@ -133,7 +209,7 @@ const generateChart = async (newData) => {
     chart.render();
 }
 
-// Tabla
+// Tabla Países
 const datoTabla = (data) => {
     let texto = "<tr><th>Países</th><th>Confirmados</th><th>Muertos</th><th>Gráfico</th></tr>";
     for (let i = 0; i < data.length; i++) {
@@ -148,7 +224,7 @@ const datoTabla = (data) => {
 }
 
 
-// Modal
+// Modal por país
 const graficoDetalle = async (pais) => {
     const modal = document.getElementById('covidChartPais');
     pais.active = Math.floor((pais.confirmed - pais.deaths) * 0.4);
@@ -188,12 +264,91 @@ const graficoDetalle = async (pais) => {
 
 }
 
-window.onload = async function () {
+// Gráfico Situación Chile
+const generarGraficoChile = async () => {
+    const container = document.getElementById('situacionChileGrafico');
+    var chart = new CanvasJS.Chart(container, {
+        animationEnabled: true,
+        theme: "light2",
+        title: {
+            text: "Situación Chile"
+        },
+        data: [{
+            type: "line",
+            indexLabelFontSize: 16,
+            dataPoints: [
+                { y: 450 },
+                { y: 414 },
+                { y: 520 },
+                { y: 460 },
+                { y: 450 },
+                { y: 500 },
+                { y: 480 },
+                { y: 480 },
+                { y: 410 },
+                { y: 500 },
+                { y: 480 },
+                { y: 510 }
+            ]
+        }]
+    });
+    chart.render();
+
+}
+
+const toggles = () => {
+    $('#iniciarSesion').toggle();
+    $('#cerrarSesion').toggle();
+    $('#situacionChile').toggle();
+}
+
+const init = async () => {
+    const token = localStorage.getItem('jwt-token');
+    console.log(token);
+    if (token) {
+        getConfirmed(token);
+        getDeaths(token);
+        getRecovered(token);
+        toggles();
+    }
+}
+
+const logOut = () => {
+    localStorage.clear();
+    window.location.reload();
+}
+
+window.onload = function () {
     getData();
-    const formulario = document.getElementById('js-form');
-    formulario.addEventListener('submit', (e) => {
-        e.preventDefault();
+    init();
+    $('#cerrarSesion').click(function () {
         console.log('click');
-        $('#dataContainer').hide();
-    })
+        logOut();
+    });
+
+    $('#js-form').submit(async (e) => {
+        e.preventDefault();
+        //$('#dataContainer').toggle();
+        $('#logeo').modal('hide');
+        $('#cerrarSesion').click(function () {
+            console.log('click');
+            logOut();
+        });
+        const email = document.getElementById('js-input-email').value
+        const password = document.getElementById('js-input-password').value
+        const JWT = await requestDataChile(email, password);
+        getConfirmed(JWT);
+        getDeaths(JWT);
+        getRecovered(JWT);
+        init();
+    });
+
+    $('#situacionChile').click(function () {
+        $('#dataContainer').toggle();
+        generarGraficoChile();
+    });
+
+    $('#home').click(function () {
+        $('#dataContainer').toggle();
+    });
 }

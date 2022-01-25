@@ -35,14 +35,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#home">Home</a>
+                        <a id="home" class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
                         <a id="iniciarSesion" class="nav-link" href="#inicio" data-toggle="modal"
                             data-target="#logeo">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a id="cerrarSesion" class="nav-link" href="#inicio">Cerrar Sesión</a>
+                        <a id="situacionChile" class="nav-link" href="#" style="display: none;">Situación Chile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="cerrarSesion" class="nav-link" href="#" style="display: none;">Cerrar Sesión</a>
                     </li>
                 </ul>
             </div>
@@ -81,8 +84,8 @@
             </div>
         </div>
     </div>
-    <div>
-        
+
+    <div id="dataContainer">
         <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div>
         <!-- Tabla -->
         <section class="container" id="tablaPais">
@@ -104,6 +107,8 @@
             </div>
         </section>
     </div>
+
+    <div id="situacionChileGrafico" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div>
 
 
     <!--jQuery-->
