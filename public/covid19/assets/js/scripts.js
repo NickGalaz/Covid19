@@ -321,8 +321,8 @@ window.onload = function () {
             console.log('click');
             logOut();
         });
-        const email = document.getElementById('js-input-email').value
-        const password = document.getElementById('js-input-password').value
+        const email = document.getElementById('js-input-email').value;
+        const password = document.getElementById('js-input-password').value;
         const JWT = await requestDataChile(email, password);
         getConfirmed(JWT);
         getDeaths(JWT);
