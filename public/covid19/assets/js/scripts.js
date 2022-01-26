@@ -1,4 +1,7 @@
 import correcionEpaciosPais from './fixPaisesCnEspacio.js';
+import { generarGraficoChile } from './SituacionChile.js';
+
+
 
 
 const getData = async () => {
@@ -39,6 +42,12 @@ window.getDataCountry = async (pais) => {
 
 
 // DATOS SITUACIÓN CHILE
+
+let sCConfirmados;
+let sCMuertos;
+let sCRecuperados;
+
+
 const requestDataChile = async (email, password) => {
     try {
         const response = await fetch('http://localhost:3000/api/login',
@@ -66,6 +75,7 @@ const getConfirmed = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (confirmed): ', data);
+            sCConfirmados = data;
         }
     } catch (error) {
         localStorage.clear();
@@ -86,6 +96,7 @@ const getDeaths = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (deaths): ', data);
+            sCMuertos = data;
         }
     } catch (error) {
         localStorage.clear();
@@ -106,6 +117,7 @@ const getRecovered = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (recovered): ', data);
+            sCRecuperados = data;
         }
     } catch (error) {
         localStorage.clear();
@@ -319,8 +331,10 @@ window.onload = function () {
     });
 
     $('#situacionChile').click(function () {
+
         $('#dataContainer').toggle();
-        generarGraficoChile();
+
+        generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);
     });
 
     $('#home').click(function () {
