@@ -1,32 +1,92 @@
 // Gráfico Situación Chile
-const generarGraficoChile = async () => {
-    const container = document.getElementById('situacionChileGrafico');
-    var chart = new CanvasJS.Chart(container, {
-        animationEnabled: true,
-        theme: "light2",
-        title: {
-            text: "Situación Chile"
+const generarGraficoChile = (sCConfirmados, sCMuertos, sCRecuperados) => {
+
+    console.log("seccion grafico");
+    console.log(sCConfirmados);
+    console.log(sCMuertos);
+    console.log(sCRecuperados);
+
+    let fechas = [];
+    let numConfirmados = [];
+    let numMuertos = [];
+    let numRecuperados = [];
+
+    for (let i = 0; i < sCConfirmados.length; i++) {
+        fechas.push(sCConfirmados[i].date);
+        numConfirmados.push(sCConfirmados[i].total);
+        numMuertos.push(sCMuertos[i].total);
+        numRecuperados.push(sCRecuperados[i].total);
+    };
+
+    console.log("fechas");
+    console.log(fechas);
+    console.log("numConfirmados");
+    console.log(numConfirmados);
+    console.log("numMuertos");
+    console.log(numMuertos);
+    console.log("numRecuperados");
+    console.log(numRecuperados);
+
+    const labels = fechas;
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Confirmados',
+                data: numConfirmados,
+                borderWidth: 2,
+                borderColor: "#fecb5a",
+                backgroundColor: "#fecb5a",
+            },
+            {
+                label: 'Muertos',
+                data: numMuertos,
+                borderWidth: 2,
+                borderColor: "#c9cbcf",
+                backgroundColor: "#c9cbcf",
+            },
+            {
+                label: 'Recuperados',
+                data: numRecuperados,
+                borderWidth: 2,
+                borderColor: "#4cbfc0",
+                backgroundColor: "#4cbfc0",
+            }
+        ]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Situación Chile',
+                    color: 'black',
+                    font: {
+                        size: 32,
+                        family: 'monospace',
+                        weight: 'normal',
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    }
+                }
+            }
         },
-        data: [{
-            type: "line",
-            indexLabelFontSize: 16,
-            dataPoints: [
-                { y: 450 },
-                { y: 414 },
-                { y: 520 },
-                { y: 460 },
-                { y: 450 },
-                { y: 500 },
-                { y: 480 },
-                { y: 480 },
-                { y: 410 },
-                { y: 500 },
-                { y: 480 },
-                { y: 510 }
-            ]
-        }]
-    });
-    chart.render();
+    };
+
+
+    const myChart = new Chart(
+        document.getElementById('situacionChileGr'),
+        config
+    );
 
 }
 

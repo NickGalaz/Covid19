@@ -1,4 +1,7 @@
 import correcionEpaciosPais from './fixPaisesCnEspacio.js';
+import { generarGraficoChile } from './SituacionChile.js';
+
+
 
 
 const getData = async () => {
@@ -20,7 +23,7 @@ const getData = async () => {
 window.getDataCountry = async (pais) => {
     if (pais == "Summer Olympics 2020" || pais == "Diamond Princess" || pais == "MS Zaandam") {
 
-        alert("La api no tiene estos paises");
+        alert("Esta sección no registra datos.");
 
     } else {
         try {
@@ -39,6 +42,16 @@ window.getDataCountry = async (pais) => {
 
 
 // DATOS SITUACIÓN CHILE
+
+let sCConfirmados;
+let sCMuertos;
+let sCRecuperados;
+let indexCarga = 0;
+let cantidaddecarga = document.getElementById("cargandocantidad");
+let cargando = document.getElementById("cargando");
+
+
+
 const requestDataChile = async (email, password) => {
     try {
         const response = await fetch('http://localhost:3000/api/login',
@@ -66,7 +79,16 @@ const getConfirmed = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (confirmed): ', data);
-        }
+            sCConfirmados = data;
+            indexCarga++;
+            if (indexCarga == 3) {
+                cantidaddecarga.innerHTML = "";
+                cargando.innerHTML= "";  
+                generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);              
+            } else {                
+            cantidaddecarga.innerHTML = `Cargando... ${indexCarga}/3 archivos listos.`;
+            };
+            }
     } catch (error) {
         localStorage.clear();
         console.log('Error (confirmed): ', error);
@@ -86,6 +108,15 @@ const getDeaths = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (deaths): ', data);
+            sCMuertos = data;
+            indexCarga++;
+            if (indexCarga == 3) {
+                cargando.innerHTML= "";  
+                generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);  
+                cantidaddecarga.innerHTML = "";                
+            } else {                
+            cantidaddecarga.innerHTML = `Cargando... ${indexCarga}/3 archivos listos.`;
+            };
         }
     } catch (error) {
         localStorage.clear();
@@ -106,6 +137,15 @@ const getRecovered = async (jwt) => {
         const { data } = await response.json();
         if (data) {
             console.log('Data API (recovered): ', data);
+            sCRecuperados = data;
+            indexCarga++;
+            if (indexCarga == 3) {
+                cantidaddecarga.innerHTML = "";   
+                cargando.innerHTML= "";  
+                generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);               
+            } else {                
+            cantidaddecarga.innerHTML = `Cargando... ${indexCarga}/3 archivos listos.`;
+            };
         }
     } catch (error) {
         localStorage.clear();
@@ -309,8 +349,8 @@ window.onload = function () {
             console.log('click');
             logOut();
         });
-        const email = document.getElementById('js-input-email').value
-        const password = document.getElementById('js-input-password').value
+        const email = document.getElementById('js-input-email').value;
+        const password = document.getElementById('js-input-password').value;
         const JWT = await requestDataChile(email, password);
         getConfirmed(JWT);
         getDeaths(JWT);
@@ -318,12 +358,44 @@ window.onload = function () {
         init();
     });
 
+    // document.getElementById("situacionChile").addEventListener("click", async () => {
+
+//         $('#dataContainer').toggle();
+
+// if (sCConfirmados == undefined || sCMuertos == undefined || sCRecuperados == undefined) {
+
+//     alert("espera un momento")
+    
+// } else {
+    
+//     generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);
+
+// }
+       
+
+
+    // });
+
     $('#situacionChile').click(function () {
+
         $('#dataContainer').toggle();
-        generarGraficoChile();
+        $('#situacionChileGrafico').toggle();
+
+        if (sCConfirmados == undefined || sCMuertos == undefined || sCRecuperados == undefined) {
+            
+            $('#cargando').toggle();
+            console.log("espera un momento")
+            
+        } else {
+            
+            $('#cargando').hide();
+            generarGraficoChile(sCConfirmados, sCMuertos, sCRecuperados);
+        
+        }
     });
 
     $('#home').click(function () {
         $('#dataContainer').toggle();
+        $('#situacionChileGrafico').hide();
     });
 }
