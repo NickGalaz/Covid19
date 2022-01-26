@@ -28,7 +28,7 @@
 <body>
 
     <!--nav-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <div class="container-fluid"> -->
         <div class="container">
             <!-- <a class="navbar-brand ms-3" href="#">Covid19</a> -->
@@ -93,11 +93,11 @@
         </div>
     </div>
 
-    <div id="dataContainer">´
-        <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;"></div>
+    <div id="dataContainer">
+        <div id="graficoCovid" class="col-12 col-sm-8 my-auto mx-auto pt-3" style="height: 500px; width: auto;"></div>
         <!-- Tabla -->
-        <section class="container" id="tablaPais">
-            <table class="table table-striped" id="tabla-covid"></table>
+        <section class="container my-5" id="tablaPais">
+            <table class="table table-striped pt-5" id="tabla-covid"></table>
             <!-- Modal -->
 
             <div class="modal fade" id="chartPais" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -115,8 +115,12 @@
             </div>
         </section>
     </div>
-
-    <div id="situacionChileGrafico" class="col-12 col-sm-8 my-auto mx-auto" style="height: 500px; width: auto;">
+    <div id="cargando" style="display: none;">
+        <p class="text-center pt-3">Esperando información porfavor mantente en la página y espera un momento.</p>
+        <p id="cargandocantidad" class="font-weight-lighter text-center">Cargando...</p>
+    </div>
+    <div id="situacionChileGrafico" class="col-12 col-sm-8 my-auto mx-auto"
+        style="height: 500px; width: auto; display: none;">
         <div>
             <canvas id="situacionChileGr"></canvas>
         </div>
