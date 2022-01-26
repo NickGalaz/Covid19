@@ -1,3 +1,6 @@
+import correcionEpaciosPais from './fixPaisesCnEspacio.js';
+
+
 const getData = async () => {
     try {
         const response = await fetch('http://localhost:3000/api/total');
@@ -14,22 +17,25 @@ const getData = async () => {
 }
 
 // Conseguir datos de cada país
-const getDataCountry = async (pais) => {
-    try {
-        if (pais==='United Kingdom'){
-            pais='GB'
+window.getDataCountry = async (pais) => {
+    if (pais == "Summer Olympics 2020" || pais == "Diamond Princess" || pais == "MS Zaandam") {
+
+        alert("La api no tiene estos paises");
+
+    } else {
+        try {
+            const response = await fetch(`http://localhost:3000/api/countries/${correcionEpaciosPais(pais)}`);
+            const { data } = await response.json();
+            console.log('Data API country: ', data);
+            if (data) {
+                graficoDetalle(data);
+            }
+            return data
+        } catch (error) {
+            console.log(`Error en getDataCountry: ${error}`);
         }
-        const response = await fetch(`http://localhost:3000/api/countries/${pais}`);
-        const { data } = await response.json();
-        console.log('Data API country: ', data);
-        if (data) {
-            graficoDetalle(data);
-        }
-        return data
-    } catch (error) {
-        console.log(`Error en getDataCountry: ${error}`);
     }
-}
+};
 
 
 // DATOS SITUACIÓN CHILE
@@ -264,37 +270,6 @@ const graficoDetalle = async (pais) => {
 
 }
 
-// Gráfico Situación Chile
-const generarGraficoChile = async () => {
-    const container = document.getElementById('situacionChileGrafico');
-    var chart = new CanvasJS.Chart(container, {
-        animationEnabled: true,
-        theme: "light2",
-        title: {
-            text: "Situación Chile"
-        },
-        data: [{
-            type: "line",
-            indexLabelFontSize: 16,
-            dataPoints: [
-                { y: 450 },
-                { y: 414 },
-                { y: 520 },
-                { y: 460 },
-                { y: 450 },
-                { y: 500 },
-                { y: 480 },
-                { y: 480 },
-                { y: 410 },
-                { y: 500 },
-                { y: 480 },
-                { y: 510 }
-            ]
-        }]
-    });
-    chart.render();
-
-}
 
 const toggles = () => {
     $('#iniciarSesion').toggle();
