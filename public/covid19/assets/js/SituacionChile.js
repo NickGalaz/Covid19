@@ -1,7 +1,7 @@
 // Gráfico Situación Chile
 const generarGraficoChile = (sCConfirmados, sCMuertos, sCRecuperados) => {
 
-    console.log("seccion grafico");
+    console.log("Sección gráfico");
     console.log(sCConfirmados);
     console.log(sCMuertos);
     console.log(sCRecuperados);
@@ -18,14 +18,10 @@ const generarGraficoChile = (sCConfirmados, sCMuertos, sCRecuperados) => {
         numRecuperados.push(sCRecuperados[i].total);
     };
 
-    console.log("fechas");
-    console.log(fechas);
-    console.log("numConfirmados");
-    console.log(numConfirmados);
-    console.log("numMuertos");
-    console.log(numMuertos);
-    console.log("numRecuperados");
-    console.log(numRecuperados);
+    console.log("Fechas: ", fechas);
+    console.log("Confirmados: ", numConfirmados);
+    console.log("Muertos", numMuertos);
+    console.log("Recuperados", numRecuperados);
 
     const labels = fechas;
     const data = {
